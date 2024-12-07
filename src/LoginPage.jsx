@@ -63,7 +63,7 @@ const LoginPage = () => {
   const loginRequest = async(data)=>
   {
     try {
-      const response = await axios.post(`http://localhost:6374/api/v1/users/login`,data);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/login`,data);
       if(response?.data?.success)
       {
         dispatch(login(response.data.data));

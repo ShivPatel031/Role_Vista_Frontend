@@ -1,14 +1,40 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { logout } from './store/userStatus';
+import { useNavigate } from 'react-router-dom';
+axios.defaults.withCredentials=true;
 
 // Navbar component
-const Navbar = ({ user, onLogout }) => {
+const Navbar = ({userInfo}) => {
 
-    // const user = useSelector(state=>state.user.status);
+    const [user,setUser] = useState(userInfo);
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    // user=true;
+
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
+    const logoutUser = async()=>
+    {
+      try {
+
+        const response = await axios(`${import.meta.env.VITE_BACKEND_URL}/users/logout`);
+
+        if(response?.data?.success)
+        {
+          dispatch(logout());
+
+          navigate("/");
+        }
+        
+      } catch (error) {
+        console.log(error);
+      }
+    }
   
     return (
       <nav className="bg-gray-800 text-white p-4">
@@ -50,7 +76,7 @@ const Navbar = ({ user, onLogout }) => {
                   >
                     <DropdownItem href="/profile">Profile</DropdownItem>
                     <DropdownItem href="/dashboard">Dashboard</DropdownItem>
-                    <DropdownItem onClick={onLogout}>Logout</DropdownItem>
+                    <DropdownItem onClick={()=>logoutUser()}>Logout</DropdownItem>
                   </motion.div>
                 )}
               </div>
@@ -68,14 +94,14 @@ const Navbar = ({ user, onLogout }) => {
   
   // DropdownItem component
   const DropdownItem = ({ href, onClick, children }) => (
-    <motion.a
-      href={href}
+    <NavLink
+      to={href}
       onClick={onClick}
       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
       whileHover={{ backgroundColor: '#f3f4f6' }}
     >
       {children}
-    </motion.a>
+    </NavLink>
   );
 
   export {Navbar};

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ChevronDown, Calendar } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Input = ({ label, type, placeholder, value, onChange, required }) => (
+const Input = ({ label, type, placeholder, value, onChange, required ,name}) => (
   <div className="mb-4">
     <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
     <input
@@ -11,18 +12,20 @@ const Input = ({ label, type, placeholder, value, onChange, required }) => (
       value={value}
       onChange={onChange}
       required={required}
+      name={name}
       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
     />
   </div>
 );
 
-const Select = ({ label, options, value, onChange, required }) => (
+const Select = ({ label, options, value, onChange, required ,name}) => (
   <div className="mb-4 relative">
     <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
     <select
       value={value}
       onChange={onChange}
       required={required}
+      name={name}
       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
     >
       <option value="">Select {label}</option>
@@ -48,6 +51,8 @@ const RegisterPage = () => {
     dateOfBirth: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -56,10 +61,33 @@ const RegisterPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const registerUser = async ()=>{
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/users/registerUser`,formData)
+      
+      if(response?.data?.success)
+      {
+        return true;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  }
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form submitted:', formData);
+
+    if(await registerUser())
+    {
+      navigate('/registerationSuccess');
+    }
+    else
+    {
+      console.log("something  went wrong while  registering user .")
+    }
+    
   };
 
   return (
@@ -122,7 +150,7 @@ const RegisterPage = () => {
 
             <Select
               label="Branch"
-              options={['CSE', 'Electronic', 'Mechanic']}
+              options={['cse', 'electronic', 'mechanic']}
               value={formData.branch}
               onChange={handleChange}
               required

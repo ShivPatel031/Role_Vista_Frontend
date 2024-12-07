@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 
@@ -20,7 +21,8 @@ const Post = ({ post }) => (
 );
 
 // Main HomePage component
-const HomePage = ({userInfo}) => {
+const HomePage = () => {
+  const userInfo = useSelector(state=>state.user);
   const [user, setUser] = useState(userInfo.status?userInfo.userData:null); // In a real app, you'd manage this with proper auth
   const [posts, setPosts] = useState([
     { id: 1, title: "First Post", content: "This is the first post content.", author: "John Doe", date: "2023-05-01" },
@@ -28,18 +30,10 @@ const HomePage = ({userInfo}) => {
     // Add more posts as needed
   ]);
 
+  const navigate = useNavigate();
+
   console.log(user);
   
-
-  const handleLogin = () => {
-    // Simulating login
-    setUser({ name: "John Doe", avatar: "https://placekitten.com/100/100", role: "Student" });
-  };
-
-  const handleLogout = () => {
-    setUser(null);
-  };
-
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow container mx-auto px-4 py-8">
@@ -73,7 +67,7 @@ const HomePage = ({userInfo}) => {
             transition={{ duration: 0.5 }}
           >
             <button
-              onClick={handleLogin}
+              onClick={()=>navigate('/login')}
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
             >
               Login to see your profile

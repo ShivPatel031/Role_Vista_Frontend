@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Route, NavLink, Routes } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Requests } from './Requests';
 
 // Mock user roles for demonstration
 const USER_ROLES = {
@@ -29,13 +30,36 @@ const Dashboard = () => {
   const filteredMenuItems = menuItems.filter(item => item.roles.includes(userRole));
 
   return (
-      <div className="flex h-screen bg-gray-100">
+    <div className='h-[calc(100vh-65px)]'>
+      <header className="bg-white shadow-lg p-4">
+            <div className="flex items-center justify-between">
+              {/* <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="text-gray-500 focus:outline-none focus:text-gray-700 md:hidden"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button> */}
+              <h1 className="text-xl font-semibold">Dashboard</h1>
+              {/* <div className="flex items-center">
+                <span className="text-sm text-gray-600 mr-2">Welcome, {userRole}</span>
+                <button className="bg-gray-800 text-white rounded-full p-2 focus:outline-none hover:bg-gray-700">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </button>
+              </div> */}
+            </div>
+      </header>
+      <div className="flex min-h-[calc(100%-60px)] bg-gray-100">
+        
         {/* Sidebar */}
         <motion.div
           initial={{ x: -300 }}
           animate={{ x: isSidebarOpen ? 0 : -300 }}
           transition={{ duration: 0.3 }}
-          className={`bg-gray-800 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
+          className={`bg-gray-800  text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
             isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           } md:relative md:translate-x-0 transition duration-200 ease-in-out`}
         >
@@ -60,27 +84,6 @@ const Dashboard = () => {
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
-          <header className="bg-white shadow-lg p-4">
-            <div className="flex items-center justify-between">
-              <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="text-gray-500 focus:outline-none focus:text-gray-700 md:hidden"
-              >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-              <h1 className="text-xl font-semibold">Dashboard</h1>
-              <div className="flex items-center">
-                <span className="text-sm text-gray-600 mr-2">Welcome, {userRole}</span>
-                <button className="bg-gray-800 text-white rounded-full p-2 focus:outline-none hover:bg-gray-700">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </header>
 
           {/* Content area */}
           <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200 p-6">
@@ -97,6 +100,7 @@ const Dashboard = () => {
           </main>
         </div>
       </div>
+    </div>
   );
 };
 
@@ -185,17 +189,48 @@ const RemoveUser = () => (
   </motion.div>
 );
 
-const Requests = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="bg-white p-6 rounded-lg shadow-lg"
-  >
-    <h2 className="text-2xl font-bold mb-4">Requests</h2>
-    <p className="text-gray-600">View and manage incoming requests.</p>
-  </motion.div>
-);
+// const UserRequest = ({requestedUser}) => {
+
+//   return (
+//     <div className='w-full flex justify-around border border-black'>
+//       <p>{requestedUser.userName}</p>
+//       <p>{requestedUser.role}</p>
+//       <p>{requestedUser.branch}</p>
+//       <button>Approve</button>
+//       <button>decline</button>
+//     </div>
+//   )
+
+// }
+
+// const reqUser=[{userName:"Shiv",role:"subadmin",branch:"cse"}];
+
+// const Requests = () => (
+//   <motion.div
+//     initial={{ opacity: 0, y: 20 }}
+//     animate={{ opacity: 1, y: 0 }}
+//     transition={{ duration: 0.5 }}
+//     className="bg-white p-6 rounded-lg shadow-lg w-full h-full"
+//   >
+//     <h2 className="text-2xl font-bold mb-4">Requests</h2>
+//     <div
+//       className=" h-[92%] rounded-lg bg-yellow-50 p-2"
+//       >
+//         <div className='w-full flex justify-around'>
+//           <p>Name</p>
+//           <p>Role</p>
+//           <p>Branch</p>
+//           <button>Approve</button>
+//           <button>decline</button>
+//         </div>
+//        { 
+//        reqUser.map(element=> {
+//           return <UserRequest requestedUser={element}/>
+//         })
+//       }
+//       </div>
+//   </motion.div>
+// );
 
 export {Dashboard};
 
