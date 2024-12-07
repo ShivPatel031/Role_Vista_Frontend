@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
+import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from './store/userStatus.js';
+import { useNavigate } from 'react-router-dom';
+axios.defaults.withCredentials=true;
 
 // Logo component
 const Logo = () => (
@@ -28,7 +34,7 @@ const Input = ({ type, placeholder, value, onChange, error }) => (
 // Button component
 const Button = ({ children, onClick, disabled }) => (
   <button
-    className="w-full px-4 py-2 font-bold text-white bg-primary rounded-lg hover:bg-primary-dark focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed transition duration-300"
+    className="w-full px-4 py-2 font-bold text-white bg-primary rounded-lg hover:bg-primary-dark focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed transition duration-300  bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
     onClick={onClick}
     disabled={disabled}
   >
@@ -43,6 +49,9 @@ const LoginPage = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const validateForm = () => {
     const newErrors = {};
     if (!email) newErrors.email = 'Email is required';
@@ -51,15 +60,35 @@ const LoginPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const loginRequest = async(data)=>
+  {
+    try {
+      const response = await axios.post(`http://localhost:6374/api/v1/users/login`,data);
+      if(response?.data?.success)
+      {
+        dispatch(login(response.data.data));
+        return true
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    return false;
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
       setIsLoading(true);
-      // Simulate API call
-      setTimeout(() => {
+      const data = {email,password};
+      if(await loginRequest(data))
+      {
         setIsLoading(false);
-        alert('Login successful!');
-      }, 2000);
+        navigate("/");
+      }
+      else{
+        setIsLoading(false);
+        alert('Login Failed !');
+      }
     }
   };
 
@@ -67,7 +96,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg">
         <div className="flex justify-center">
-          <Logo />
+          <NavLink to="/"><Logo /></NavLink>
         </div>
         <h3 className="text-2xl font-bold text-center mt-4 mb-6">Login to Role Vista</h3>
         <form onSubmit={handleSubmit}>
@@ -94,14 +123,12 @@ const LoginPage = () => {
         </div>
         <div className="text-sm text-center">
             Don't have an account?{' '}
-            <a href="#" className="font-medium text-primary hover:text-primary-dark">
-              Sign up
-            </a>
+            <NavLink to="/register" className="font-medium text-primary hover:text-primary-dark">Sign up</NavLink>
           </div>
       </div>
     </div>
   );
 };
 
-export default LoginPage;
+export {LoginPage};
 
