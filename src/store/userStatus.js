@@ -12,14 +12,13 @@ const userSlice = createSlice(
         reducers:{
             login:(state,action)=>
             {
-                state.status=true;
-                state.userData=action.payload
+             const newState = {...state,status:true,userData:action.payload} 
+             return newState
             },
-            logout:(state)=>
-            {
-                state.status=false,
-                state.userData=null
-            }
+            logout: () => ({
+                status: false,
+                userData: null,
+            }),
         }
     }
 );

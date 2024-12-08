@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Route, NavLink, Routes } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Requests } from './Requests';
+import { CreatePost } from './CreatePost';
 
 // Mock user roles for demonstration
 const USER_ROLES = {
@@ -52,7 +53,7 @@ const Dashboard = () => {
               </div> */}
             </div>
       </header>
-      <div className="flex min-h-[calc(100%-60px)] bg-gray-100">
+      <div className="flex h-full bg-gray-100">
         
         {/* Sidebar */}
         <motion.div
@@ -129,17 +130,7 @@ const MyPosts = () => (
   </motion.div>
 );
 
-const CreatePost = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="bg-white p-6 rounded-lg shadow-lg"
-  >
-    <h2 className="text-2xl font-bold mb-4">Create a New Post</h2>
-    <p className="text-gray-600">Use this form to create a new post.</p>
-  </motion.div>
-);
+
 
 const LikedPosts = () => (
   <motion.div

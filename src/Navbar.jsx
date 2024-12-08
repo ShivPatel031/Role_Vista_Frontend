@@ -2,15 +2,15 @@ import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/userStatus';
 import { useNavigate } from 'react-router-dom';
 axios.defaults.withCredentials=true;
 
 // Navbar component
-const Navbar = ({userInfo}) => {
+const Navbar = () => { 
 
-    const [user,setUser] = useState(userInfo);
+    const user = useSelector(state=>state.user.status)
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 

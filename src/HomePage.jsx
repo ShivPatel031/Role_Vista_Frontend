@@ -23,7 +23,7 @@ const Post = ({ post }) => (
 // Main HomePage component
 const HomePage = () => {
   const userInfo = useSelector(state=>state.user);
-  const [user, setUser] = useState(userInfo.status?userInfo.userData:null); // In a real app, you'd manage this with proper auth
+  const user = userInfo.status ? userInfo.userData : null;
   const [posts, setPosts] = useState([
     { id: 1, title: "First Post", content: "This is the first post content.", author: "John Doe", date: "2023-05-01" },
     { id: 2, title: "Second Post", content: "This is the second post content.", author: "Jane Smith", date: "2023-05-02" },
@@ -31,8 +31,6 @@ const HomePage = () => {
   ]);
 
   const navigate = useNavigate();
-
-  console.log(user);
   
   return (
     <div className="min-h-screen flex flex-col">
