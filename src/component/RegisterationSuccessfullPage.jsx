@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const RegistrationSuccess = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <div className="bg-white shadow-xl rounded-lg p-8 max-w-md w-full text-center">

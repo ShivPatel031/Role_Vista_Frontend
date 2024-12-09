@@ -6,78 +6,77 @@ import { HomePage } from './HomePage';
 import { RegisterPage } from './RegisterPage';
 import { PostsPage } from './PostPage';
 import { Dashboard } from './DashboardPage';
-import { Navbar } from './Navbar';
-import { Footer } from './Footer';
+import { Navbar } from './component/Navbar.jsx';
+import { Footer } from './component/Footer.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from './store/userStatus';
-import { addPosts } from './store/PostData.js';
-import { RegistrationSuccess } from './RegisterationSuccessfullPage';
+import { addPosts} from './store/PostData.js';
+import {RegistrationSuccess} from './component/RegisterationSuccessfullPage.jsx'
+
 import axios from 'axios';
 axios.defaults.withCredentials=true;
 
+
 function App() {
-
-  const user = useSelector(state =>state.user)
-  const [loading,setLoading] = useState(true);
+  const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-
-
-  const fetchPosts = async ()=>
-  {
-    try {
-      const response = await axios(`${import.meta.env.VITE_BACKEND_URL}/posts/getAllPosts`);
-      if(response?.data?.success)
-      {
-        dispatch(addPosts(response.data.data));
-      } 
-    } catch (error) {
-      console.log("fail to login with token",error.message)
-    }
-  }
-  
   const location = useLocation();
 
-  const loginWithToken = async()=>
-  {
+  const fetchPosts = async () => {
     try {
-      const response = await axios(`${import.meta.env.VITE_BACKEND_URL}/users/loginWithToken`);
-      if(response?.data?.success)
-      {
-        dispatch(login(response.data.data));
-      } 
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/posts/getAllPosts`);
+      if (response?.data?.success) {
+        dispatch(addPosts(response.data.data));
+      }
     } catch (error) {
-      console.log("fail to login with token",error.message)
+      console.error("Failed to fetch posts:", error.message);
     }
-    setLoading(false);
-  }
+  };
 
-  if(user.status)
-  {
-    fetchPosts();
-  }
+  const loginWithToken = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/loginWithToken`);
+      if (response?.data?.success) {
+        dispatch(login(response.data.data));
+      }
+    } catch (error) {
+      console.error("Failed to login with token:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  useEffect(()=>{
-    loginWithToken();
-  },[]);
+  useEffect(() => {
+    const initializeApp = async () => {
+      await loginWithToken();
+      if (user?.status) {
+        await fetchPosts();
+      }
+    };
+    initializeApp();
+  }, [user?.status]); // Run when user.status changes
 
-  if(loading) return <div className="text-center p-4">Loading ...</div>
+  const showHeaderFooter = location.pathname !== "/login" && location.pathname !== "/register";
+
+  if (loading) return <div className="text-center p-4">Loading...</div>;
 
   return (
     <>
-      {location.pathname !== "/login" &&  location.pathname !== "/register" && <Navbar userInfo={user.status}/>}
-    
+      {showHeaderFooter && <Navbar userInfo={user.status} />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/posts/*" element = {<PostsPage />} />
-        <Route path="/dashboard/*" element = {<Dashboard />} />
+        <Route path="/posts/*" element={<PostsPage />} />
+        <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/registerationSuccess" element={<RegistrationSuccess />} />
       </Routes>
-
-      {location.pathname !== "/login" &&  location.pathname !== "/register" && <Footer />}
+      {showHeaderFooter && <Footer />}
+      
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+

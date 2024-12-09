@@ -1,14 +1,14 @@
 import { Route, Router, Routes } from "react-router-dom"
-import { Posts } from "./Posts"
-import { OnePostPage } from "./OnePostPage"
+import { Posts } from "./component/Posts"
+import { OnePostPage } from "./component/OnePostPage"
 
 const PostsPage = ()=>
 {
   return (
     <>
     <Routes>
-      <Route path="/" element={<Posts />} />
-      <Route path="/onePostPage/:id" element={<OnePostPage />} />
+      <Route path="" element={<Posts />} />
+      <Route path="onePostPage/:id" element={<OnePostPage />} />
     </Routes>
     </>
     

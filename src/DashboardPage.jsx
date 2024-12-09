@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Route, NavLink, Routes } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Requests } from './Requests';
-import { CreatePost } from './CreatePost';
+import { Requests } from './component/Requests';
+import { CreatePost } from './component/CreatePost';
+import { RestrictUser } from './component/RestrictUser';
+import { RemoveUser } from './component/RemoveUsers';
 
 // Mock user roles for demonstration
 const USER_ROLES = {
@@ -34,28 +36,13 @@ const Dashboard = () => {
     <div className='h-[calc(100vh-65px)]'>
       <header className="bg-white shadow-lg p-4">
             <div className="flex items-center justify-between">
-              {/* <button
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                className="text-gray-500 focus:outline-none focus:text-gray-700 md:hidden"
-              >
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button> */}
+              
               <h1 className="text-xl font-semibold">Dashboard</h1>
-              {/* <div className="flex items-center">
-                <span className="text-sm text-gray-600 mr-2">Welcome, {userRole}</span>
-                <button className="bg-gray-800 text-white rounded-full p-2 focus:outline-none hover:bg-gray-700">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-              </div> */}
+              
             </div>
       </header>
       <div className="flex h-full bg-gray-100">
         
-        {/* Sidebar */}
         <motion.div
           initial={{ x: -300 }}
           animate={{ x: isSidebarOpen ? 0 : -300 }}
@@ -92,8 +79,8 @@ const Dashboard = () => {
               <Route path="/my-posts" element={<MyPosts />} />
               <Route path="/create-post" element={<CreatePost />} />
               <Route path="/liked-posts" element={<LikedPosts />} />
-              <Route path="/restrict-student" element={<RestrictStudent />} />
-              <Route path="/remove-post" element={<RemovePost />} />
+              <Route path="/restrict-student" element={<RestrictUser />} />
+              <Route path="/remove-post" element={<RemoveUser />} />
               <Route path="/remove-user" element={<RemoveUser />} />
               <Route path="/requests" element={<Requests />} />
               <Route path="/" element={<Welcome />} />
@@ -144,17 +131,6 @@ const LikedPosts = () => (
   </motion.div>
 );
 
-const RestrictStudent = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="bg-white p-6 rounded-lg shadow-lg"
-  >
-    <h2 className="text-2xl font-bold mb-4">Restrict Student</h2>
-    <p className="text-gray-600">Manage student restrictions here.</p>
-  </motion.div>
-);
 
 const RemovePost = () => (
   <motion.div
@@ -168,17 +144,17 @@ const RemovePost = () => (
   </motion.div>
 );
 
-const RemoveUser = () => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-    className="bg-white p-6 rounded-lg shadow-lg"
-  >
-    <h2 className="text-2xl font-bold mb-4">Remove User</h2>
-    <p className="text-gray-600">Manage user removals here.</p>
-  </motion.div>
-);
+// const RemoveUser = () => (
+//   <motion.div
+//     initial={{ opacity: 0, y: 20 }}
+//     animate={{ opacity: 1, y: 0 }}
+//     transition={{ duration: 0.5 }}
+//     className="bg-white p-6 rounded-lg shadow-lg"
+//   >
+//     <h2 className="text-2xl font-bold mb-4">Remove User</h2>
+//     <p className="text-gray-600">Manage user removals here.</p>
+//   </motion.div>
+// );
 
 // const UserRequest = ({requestedUser}) => {
 

@@ -55,44 +55,101 @@ const FilterDropdown = ({ options, selectedOption, onSelect }) => {
 
 
 // Main PostsPage component
+// const Posts = () => {
+//   const fetchedPosts = useSelector(state=>state?.posts?.posts);
+//   const userId = useSelector(state=>state?.user?.userData?._id);
+//   const posts = fetchedPosts?.length === 0 ? [] : fetchedPosts;
+//   const [filteredPosts, setFilteredPosts] = useState([]);
+//   const [filterOption, setFilterOption] = useState('Latest');
+
+//   useEffect(() => {
+//     let sorted = [...posts];
+//     switch (filterOption) {
+//       case 'Most Liked':
+//         sorted.sort((a, b) => b.likes - a.likes);
+//         break;
+//       case 'Most Commented':
+//         sorted.sort((a, b) => b.comments - a.comments);
+//         break;
+//       case 'Oldest':
+//         sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+//         break;
+//       default: // Latest
+//         sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+//     }
+//     setFilteredPosts(sorted);
+//   }, [filterOption, posts]);
+
+//   return (
+//     <div className="min-h-screen flex flex-col bg-gray-100">
+//       <main className="flex-grow container mx-auto px-4 py-8">
+//         <motion.h1
+//           className="text-3xl font-bold mb-6"
+//           initial={{ opacity: 0, y: -20 }}
+//           animate={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.5 }}
+//         >
+//           Posts
+//         </motion.h1>
+//         <div className="flex justify-between items-center mb-6">
+//           <motion.div
+//             className="flex items-center space-x-2"
+//             initial={{ opacity: 0, x: -20 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             transition={{ duration: 0.5 }}
+//           >
+//             <Filter className="h-5 w-5 text-gray-500" />
+//             <span className="text-gray-700">Filter by:</span>
+//           </motion.div>
+//           <motion.div
+//             initial={{ opacity: 0, x: 20 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             transition={{ duration: 0.5 }}
+//           >
+//             <FilterDropdown
+//               options={['Latest', 'Oldest', 'Most Liked', 'Most Commented']}
+//               selectedOption={filterOption}
+//               onSelect={setFilterOption}
+//             />
+//           </motion.div>
+//         </div>
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//           <AnimatePresence>
+//             {filteredPosts.map((post) => (
+//               <PostCard key={post.id} post={post} userId={userId} />
+//             ))}
+//           </AnimatePresence>
+//         </div>
+//       </main>
+//     </div>
+//   );
+// };
+
+// export {Posts};
+
 const Posts = () => {
-  const fetchedPosts = useSelector(state=>state.posts.posts);
-  const userId = useSelector(state=>state?.user?.userData?._id)
-  console.log(fetchedPosts);
-  const [posts, setPosts] = useState(fetchedPosts?.length === 0 ? [] : fetchedPosts);
+  const fetchedPosts = useSelector((state) => state?.posts?.posts || []);
+  const userId = useSelector((state) => state?.user?.userData?._id);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [filterOption, setFilterOption] = useState('Latest');
 
-  // useEffect(() => {
-  //   // Simulating API call to fetch posts
-  //   const fetchPosts = async () => {
-  //     // Replace this with actual API call
-  //     const response = await fetch('/api/posts');
-  //     const data = await response.json();
-  //     setPosts(data);
-  //     setFilteredPosts(data);
-  //   };
-
-  //   fetchPosts();
-  // }, []);
-
   useEffect(() => {
-    let sorted = [...posts];
+    const sorted = [...fetchedPosts];
     switch (filterOption) {
       case 'Most Liked':
-        sorted.sort((a, b) => b.likes - a.likes);
+        sorted.sort((a, b) => (b.likes || 0) - (a.likes || 0));
         break;
       case 'Most Commented':
-        sorted.sort((a, b) => b.comments - a.comments);
+        sorted.sort((a, b) => (b.comments || 0) - (a.comments || 0));
         break;
       case 'Oldest':
-        sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+        sorted.sort((a, b) => new Date(a.date || 0) - new Date(b.date || 0));
         break;
       default: // Latest
-        sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sorted.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
     }
     setFilteredPosts(sorted);
-  }, [filterOption, posts]);
+  }, [filterOption, fetchedPosts]);
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
@@ -129,9 +186,13 @@ const Posts = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <AnimatePresence>
-            {filteredPosts.map((post) => (
-              <PostCard key={post.id} post={post} userId={userId} />
-            ))}
+            {filteredPosts.length > 0 ? (
+              filteredPosts.map((post) => (
+                <PostCard key={post.id || post._id} post={post} userId={userId} />
+              ))
+            ) : (
+              <p className="text-gray-500 text-center">No posts available.</p>
+            )}
           </AnimatePresence>
         </div>
       </main>
@@ -139,5 +200,5 @@ const Posts = () => {
   );
 };
 
-export {Posts};
+export { Posts };
 

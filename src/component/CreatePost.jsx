@@ -2,7 +2,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addOnePost } from './store/PostData';
+import { addOnePost } from '../store/PostData';
 
 const FormComponent = () => {
     const [title, setTitle] = useState('');

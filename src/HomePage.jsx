@@ -2,33 +2,16 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { PostCard } from './component/PostCard';
 
-
-// Post component
-const Post = ({ post }) => (
-  <motion.div
-    className="bg-white p-4 rounded-lg shadow-md mb-4"
-    initial={{ opacity: 0, y: 50 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.5 }}
-  >
-    <h3 className="text-lg font-semibold">{post.title}</h3>
-    <p className="text-gray-600">{post.content}</p>
-    <div className="mt-2 text-sm text-gray-500">
-      Posted by {post.author} - {post.date}
-    </div>
-  </motion.div>
-);
 
 // Main HomePage component
 const HomePage = () => {
   const userInfo = useSelector(state=>state.user);
   const user = userInfo.status ? userInfo.userData : null;
-  const [posts, setPosts] = useState([
-    { id: 1, title: "First Post", content: "This is the first post content.", author: "John Doe", date: "2023-05-01" },
-    { id: 2, title: "Second Post", content: "This is the second post content.", author: "Jane Smith", date: "2023-05-02" },
-    // Add more posts as needed
-  ]);
+  const postInfo =  useSelector(state=>state?.posts?.posts);
+
+  const post = postInfo ? postInfo.slice(0,5) : [];
 
   const navigate = useNavigate();
   
@@ -75,10 +58,8 @@ const HomePage = () => {
 
         <section>
           <h2 className="text-2xl font-bold mb-4">Latest Posts</h2>
-          <div className="space-y-4">
-            {posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {post.map(p=><PostCard post={p} userId={user?._id} />)}
           </div>
         </section>
       </main>

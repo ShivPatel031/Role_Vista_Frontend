@@ -3,13 +3,14 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThumbsUp } from 'lucide-react';
-import { addComment, likePost, removeComment, removeLike, removeOnePost } from './store/PostData';
+import { addComment, likePost, removeComment, removeLike, removeOnePost } from '../store/PostData';
 
 const OnePostPage = () => {
     const {id} = useParams();
     const userId = useSelector(state=>state?.user?.userData?._id);
     const posts = useSelector(state=>state?.posts?.posts);
-  const [post, setPost] = useState(posts?.length === 0 ? null : ()=>posts.filter(p=>p._id===id)[0]);
+    const post = posts?.length === 0 ? null : posts.filter(p=>p._id===id)[0];
+  console.log(post);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [error, setError] = useState(null);

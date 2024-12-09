@@ -15,10 +15,11 @@ const userSlice = createSlice(
              const newState = {...state,status:true,userData:action.payload} 
              return newState
             },
-            logout: () => ({
-                status: false,
-                userData: null,
-            }),
+            logout: (state,) => {
+                state.status= false;
+                state.userData= null;
+                return state;
+            },
         }
     }
 );

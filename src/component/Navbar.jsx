@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from './store/userStatus';
+import { logout } from '../store/userStatus';
 import { useNavigate } from 'react-router-dom';
+import { clearAllPosts } from '../store/PostData';
 axios.defaults.withCredentials=true;
 
 // Navbar component
@@ -27,6 +28,8 @@ const Navbar = () => {
         if(response?.data?.success)
         {
           dispatch(logout());
+
+          dispatch(clearAllPosts());
 
           navigate("/");
         }
