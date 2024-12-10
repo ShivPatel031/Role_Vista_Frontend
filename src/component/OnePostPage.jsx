@@ -7,7 +7,7 @@ import { addComment, likePost, removeComment, removeLike, removeOnePost } from '
 
 const OnePostPage = () => {
     const {id} = useParams();
-    const userId = useSelector(state=>state?.user?.userData?._id);
+    const user = useSelector(state=>state?.user?.userData);
     const posts = useSelector(state=>state?.posts?.posts);
     const post = posts?.length === 0 ? null : posts.filter(p=>p._id===id)[0];
   console.log(post);
@@ -25,7 +25,7 @@ const OnePostPage = () => {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/likePost`,data);
       if(response?.data?.success)
       {
-        const payload = {postId:post._id,userId};
+        const payload = {postId:post._id,userId:user._id};
         dispatch(likePost(payload))
       }
     } catch (error) {
@@ -40,7 +40,7 @@ const OnePostPage = () => {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/removeLike`,data);
       if(response?.data?.success)
       {
-        const payload = {postId:post._id,userId};
+        const payload = {postId:post._id,userId:user._id};
         dispatch(removeLike(payload))
       }
     } catch (error) {
@@ -56,7 +56,7 @@ const OnePostPage = () => {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/posts/comments/doComment`, data );
       if(response?.data?.success)
       {
-        dispatch(addComment({userId,postId:post._id,comment:newComment,_id:response.data.data._id}));
+        dispatch(addComment({userId:user._id,postId:post._id,comment:newComment,_id:response.data.data._id}));
         setNewComment('');
       }
       
@@ -129,9 +129,9 @@ const OnePostPage = () => {
       </div>
       <div className="flex items-center mb-4">
       <span className="flex items-center text-gray-500">
-              <ThumbsUp className={`h-5 w-5 mr-1 ${(post.likes.includes(userId))?"text-red-500":""}`} 
+              <ThumbsUp className={`h-5 w-5 mr-1 ${(post.likes.includes(user._id))?"text-red-500":""}`} 
                 onClick={()=>{
-                  if(!post.likes.includes(userId))
+                  if(!post.likes.includes(user._id))
                   {
                     return likeThisPost(post._id);
                   }
@@ -145,13 +145,14 @@ const OnePostPage = () => {
         {/* <span className="mr-2">Likes:</span>
         <span>{post.likes ? post.likes.length : 0}</span> */}
       </div>
-      <button 
+      {(user.role === 'admin' || (user.role === 'sub-admin' && user.branch === post.userId.branch)) && <button 
         onClick={handleRemovePost} 
         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mb-4"
         aria-label="Remove post"
       >
         Remove Post
-      </button>
+      </button>}
+      
 
       <h2 className="text-2xl font-bold mb-4">Comments</h2>
       {post.enableComment ? (
@@ -180,13 +181,14 @@ const OnePostPage = () => {
               post.comments.map((comment) => (
                 <div key={comment._id} className="bg-gray-100 p-4 rounded mb-2">
                   <p>{comment.comment}</p>
-                  <button 
+                  {(user.role === 'admin' || (user.role === 'sub-admin' && user.branch === post.userId.branch)) && <button 
                     onClick={() => handleRemoveComment(comment._id)} 
                     className="text-red-500 mt-2"
                     aria-label="Remove comment"
                   >
                     Remove
-                  </button>
+                  </button>}
+                  
                 </div>
               ))
             ) : (

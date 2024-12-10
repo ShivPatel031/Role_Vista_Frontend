@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 axios.defaults.withCredentials=true;
 
 // Table component
@@ -53,11 +54,12 @@ const Label = ({ children, ...props }) => (
 )
 
 const RestrictUser = () => {
+  const loginUser = useSelector(state=>state?.user?.userData)
   const [users, setUsers] = useState([]);
   const [filter, setFilter] = useState("");
 
   // Debugging user data
-  console.log(users);
+  
 
   // Handle permission change
   const handlePermissionChange = (userId, permissionKey) => {
@@ -168,7 +170,7 @@ const RestrictUser = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  {user.role === "user" && (
+                  {user.role === "user" && loginUser.role === 'admin' && (
                     <Checkbox
                       checked={user.permissions.canSubAdminRestrictPost}
                       onCheckedChange={() => handlePermissionChange(user._id, "canSubAdminRestrictPost")}
@@ -177,7 +179,7 @@ const RestrictUser = () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  {user.role === "user" && (
+                  {user.role === "user" && loginUser.role === 'admin' && (
                     <Checkbox
                       checked={user.permissions.canSubAdminRestrictComment}
                       onCheckedChange={() => handlePermissionChange(user._id, "canSubAdminRestrictComment")}

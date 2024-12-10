@@ -11,6 +11,7 @@ axios.defaults.withCredentials = true;
 const PostCard = ({ post , userId}) => 
 {
   const dispatch = useDispatch();
+  console.log(post);
 
   const likeThisPost = async(postId)=>
   {
