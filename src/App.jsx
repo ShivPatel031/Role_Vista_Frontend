@@ -14,6 +14,8 @@ import { addPosts} from './store/PostData.js';
 import {RegistrationSuccess} from './component/RegisterationSuccessfullPage.jsx'
 
 import axios from 'axios';
+import { Profile } from './ProfilePage.jsx';
+import { AboutUs } from './AboutUs.jsx';
 axios.defaults.withCredentials=true;
 
 
@@ -71,6 +73,8 @@ function App() {
         <Route path="/posts/*" element={<PostsPage />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="/registerationSuccess" element={<RegistrationSuccess />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
       {showHeaderFooter && <Footer />}
       

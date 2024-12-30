@@ -44,7 +44,7 @@ const Navbar = () => {
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <motion.img
-              src="/logo.png" // Replace with your actual logo
+              src="/Role vista Logo.png" // Replace with your actual logo
               alt="Role Vista Logo"
               className="h-8 w-8"
               whileHover={{ scale: 1.1 }}
@@ -68,7 +68,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <img src={user.avatar} alt={user.name} className="h-8 w-8 object-cover" />
+                  <img src={user.avatar || "./user.png"} alt={user.name} className="h-8 w-8 object-cover" />
                 </motion.button>
                 {isDropdownOpen && (
                   <motion.div

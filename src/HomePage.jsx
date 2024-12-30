@@ -59,7 +59,7 @@ const HomePage = () => {
         <section>
           <h2 className="text-2xl font-bold mb-4">Latest Posts</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {post.map(p=><PostCard post={p} userId={user?._id} />)}
+            {post.length !== 0 ? post.map(p=><PostCard post={p} userId={user?._id} />):<p className="text-gray-500 text-center w-screen">No posts available.</p>}
           </div>
         </section>
       </main>

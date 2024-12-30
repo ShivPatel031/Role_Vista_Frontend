@@ -96,7 +96,7 @@ const LoginPage = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="px-8 py-6 mt-4 text-left bg-white shadow-lg rounded-lg">
         <div className="flex justify-center">
-          <NavLink to="/"><Logo /></NavLink>
+          <NavLink to="/"><img src="./Role vista Logo.png" alt='logo' className='w-[100px] rounded-full' /></NavLink>
         </div>
         <h3 className="text-2xl font-bold text-center mt-4 mb-6">Login to Role Vista</h3>
         <form onSubmit={handleSubmit}>
