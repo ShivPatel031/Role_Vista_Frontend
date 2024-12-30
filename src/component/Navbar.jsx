@@ -174,7 +174,7 @@ const Navbar = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <img src={user.avatar || "./user.png"} alt={user.name} className="h-8 w-8 object-cover" />
+                  <img src={"./user.png"} alt={user.name} className="h-8 w-8 object-cover" />
                 </motion.button>
                 <AnimatePresence>
                   {isDropdownOpen && (
